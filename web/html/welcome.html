@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>枫叶网上书店系统欢迎您</title>
+    <script src="../js/jquery-3.6.1.js"></script>
+    <script src="../js/check_submit.js"></script>
+</head>
+<body>
+<h1>欢迎登录枫叶网上书店系统</h1>
+<form action="../LoginServlet" method="post" id="form">
+    <div>
+        <label for="phone">手机号</label>
+        <input type="text" name="phone" id="phone" value="18622222222">
+    </div>
+    <div>
+        <label for="password">密码</label>
+        <input type="password" name="password" id="password" value="1111">
+    </div>
+    <div>
+        <span>还没有账号？<a href="register.html">点我注册</a></span>
+    </div>
+    <div>
+        <input type="hidden" name="isuser">
+        <input type="button" value="用户登录" onclick="form_submit(1)">
+        <input type="button" value="商户登录" onclick="form_submit(0)">
+    </div>
+</form>
+</body>
+</html>

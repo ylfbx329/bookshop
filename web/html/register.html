@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="../js/jquery-3.6.1.js"></script>
+    <script src="../js/check_submit.js"></script>
+</head>
+<body>
+<h1>欢迎加入枫叶，请填写基本信息</h1>
+<form action="../RegisterServlet" method="post" id="form">
+    <div>
+        <label for="phone">手机号</label>
+        <input type="text" name="phone" id="phone">
+    </div>
+    <div>
+        <label for="password">密码</label>
+        <input type="password" name="password" id="password">
+    </div>
+    <div>
+        <label for="name">昵称/商铺名称</label>
+        <input type="text" name="name" id="name">
+    </div>
+    <div>
+        <input type="hidden" name="isuser">
+        <input type="button" value="用户注册" onclick="form_submit(1)">
+        <input type="button" value="商户注册" onclick="form_submit(0)">
+    </div>
+</form>
+</body>
+</html>
