@@ -10,6 +10,9 @@ $.ajaxSetup({
             }
             // 将后端重定向的地址取出来,使用win.location.href去实现重定向的要求
             win.location.href = xhr.getResponseHeader("CONTENTPATH");
+            console.log(xhr.getResponseHeader("CONTENTPATH"))
         }
+        console.log(xhr.getResponseHeader("REDIRECT"))
+        console.log(xhr.getResponseHeader("CONTENTPATH"))
     }
 });

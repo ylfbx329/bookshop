@@ -54,15 +54,36 @@ public class Book {
         return n;
     }
 
+    public static int updateBook(Book book) throws SQLException {
+        Connection conn = ConnDatabase.getConnection();
+        String sql = "update book set isbn = ?, book_name = ?,author = ?, press = ?,pub_date = ?,price = ?,store_mount = ?,img = ? where book_id = ?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, book.getIsbn());
+        pst.setString(2, book.getBook_name());
+        pst.setString(3, book.getAuthor());
+        pst.setString(4, book.getPress());
+        pst.setDate(5, book.getPub_date());
+        pst.setBigDecimal(6, book.getPrice());
+        pst.setInt(7, book.getStore_mount());
+        pst.setBytes(8, book.getImg());
+        pst.setString(9, book.getBook_id());
+        int n = pst.executeUpdate();
+        pst.close();
+        conn.close();
+        return n;
+    }
+
     public static List<Book> queryBook(String seller_id) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
         Statement statement = conn.createStatement();
         String sql = "select * from book ";
         if (seller_id != null) {
-            sql += "where seller_id = " + seller_id;
+            sql += "where seller_id = '" + seller_id + "'";
+            System.out.println("queryBook sql -> " + sql);
         } else {
             sql += "inner join seller on seller.seller_id = book.seller_id";
         }
+        System.out.println("queryBook sql -> " + sql);
         ResultSet resultSet = statement.executeQuery(sql);
         List<Book> books = new ArrayList<>();
         Book book;
@@ -79,7 +100,8 @@ public class Book {
             book.setStore_mount(resultSet.getInt("store_mount"));
             book.setDeal_mount(resultSet.getInt("deal_mount"));
             book.setImg(resultSet.getBytes("img"));
-            book.setShop_name(resultSet.getString("shop_name"));
+            if (seller_id == null)
+                book.setShop_name(resultSet.getString("shop_name"));
             books.add(book);
         }
         resultSet.close();

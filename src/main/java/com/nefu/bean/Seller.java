@@ -37,6 +37,10 @@ public class Seller {
         preparedStatement.setString(2, seller.getPassword());
         ResultSet resultSet = preparedStatement.executeQuery();
         boolean flag = resultSet.next();
+        if (flag) {
+            seller.setSeller_id(resultSet.getString("seller_id"));
+            seller.setShop_name(resultSet.getString("shop_name"));
+        }
         resultSet.close();
         preparedStatement.close();
         conn.close();

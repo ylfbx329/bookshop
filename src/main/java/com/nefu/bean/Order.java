@@ -2,7 +2,6 @@ package com.nefu.bean;
 
 import javafx.util.Pair;
 
-import javax.servlet.annotation.WebServlet;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
@@ -65,13 +64,15 @@ public class Order {
         return n;
     }
 
-    public static int deleteOrder(String order_id) throws SQLException {
+    public static int deleteOrder(String id, boolean pay_flag) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "delete from `order` where order_id = ?";
+        String idType = pay_flag ? "user_id" : "order_id";
+        String sql = "delete from `order` where " + idType + " = ?";
         PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, order_id);
-        System.out.println("deleteOrder sql -> " + sql + order_id);
+        pst.setString(1, id);
+        System.out.println("deleteOrder sql -> " + sql + id);
         int n = pst.executeUpdate();
+        System.out.println("deleteOrder n -> " + n);
         pst.close();
         conn.close();
         return n;
@@ -118,15 +119,34 @@ public class Order {
         return false;
     }
 
-    public BigDecimal queryPrice(String book_id) throws SQLException {
+    public BigDecimal queryBookPrice(String book_id) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
         String sql = "select price from book where book_id = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setString(1, book_id);
+        System.out.println("queryBookPrice sql -> " + sql);
+        System.out.println("queryBookPrice book_id -> " + book_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         BigDecimal price = null;
         if (resultSet.next()) {
-            price = new BigDecimal(String.valueOf(resultSet.getBigDecimal("price")));
+            System.out.println("queryBookPrice -> yes");
+            price = resultSet.getBigDecimal("price");
+        }
+        resultSet.close();
+        preparedStatement.close();
+        conn.close();
+        return price;
+    }
+
+    public static BigDecimal getSumPrice(String user_id) throws SQLException {
+        Connection conn = ConnDatabase.getConnection();
+        String sql = "select price from `order` where user_id = ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setString(1, user_id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        BigDecimal price = new BigDecimal(0);
+        while (resultSet.next()) {
+            price = price.add(resultSet.getBigDecimal("price"));
         }
         resultSet.close();
         preparedStatement.close();
@@ -173,7 +193,7 @@ public class Order {
             System.out.println("Order this.price -> " + price);
             return this.price;
         }
-        BigDecimal price = queryPrice(this.book_id);
+        BigDecimal price = queryBookPrice(this.book_id);
         System.out.println("Order price -> " + price);
         if (price != null) {
             this.price = price.multiply(BigDecimal.valueOf(this.order_mount));

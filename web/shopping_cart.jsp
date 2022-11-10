@@ -26,16 +26,18 @@
 <div>
 	<span>你好，<%=user.getNick_name()%></span>
 	<span hidden id="user_id"><%=user.getUser_id()%></span>
+	<a href="LogoutServlet">退出登录</a>
 </div>
+<a href="user_index.jsp">返回商品购买页</a>
 <%
 	List<Pair<Order, Book>> orders = Order.queryOrder(user.getUser_id());
-	if (orders == null) {
+	if (orders.size() == 0) {
 		out.print("购物车内暂无商品，请前去选购吧！");
-		response.sendRedirect("user_index.jsp");
 	} else {
 %>
 <table>
 	<tr>
+		<th>序号</th>
 		<th>封面</th>
 		<th>书名</th>
 		<th>作者</th>
@@ -47,42 +49,47 @@
 		<th>删除</th>
 	</tr>
 	<%
-		for (Pair<Order, Book> order : orders) {
+		for (int i = 0; i < orders.size(); i++) {
 	%>
 	<tr>
 		<td>
-			<%=order.getValue().getImg()%>
+			<%=i + 1%>
 		</td>
 		<td>
-			<%=order.getValue().getBook_name()%>
+			<%=orders.get(i).getValue().getImg()%>
 		</td>
 		<td>
-			<%=order.getValue().getAuthor()%>
+			<%=orders.get(i).getValue().getBook_name()%>
 		</td>
 		<td>
-			<%=order.getValue().getPress()%>
+			<%=orders.get(i).getValue().getAuthor()%>
 		</td>
 		<td>
-			<%=order.getValue().getShop_name()%>
+			<%=orders.get(i).getValue().getPress()%>
 		</td>
 		<td>
-			<%=order.getValue().getPrice()%>
+			<%=orders.get(i).getValue().getShop_name()%>
 		</td>
 		<td>
-			<%=order.getKey().getOrder_mount()%>
+			<%=orders.get(i).getValue().getPrice()%>
 		</td>
 		<td>
-			<%=order.getKey().getPrice()%>
+			<%=orders.get(i).getKey().getOrder_mount()%>
 		</td>
 		<td>
-			<button class="delete" type="button" value="<%=order.getKey().getOrder_id()%>">删除</button>
+			<%=orders.get(i).getKey().getPrice()%>
+		</td>
+		<td>
+			<button class="delete" type="button" value="<%=orders.get(i).getKey().getOrder_id()%>">删除</button>
 		</td>
 	</tr>
 	<%
-			}
 		}
 	%>
 </table>
-<button name="buy" onclick="buy_book()">结算</button>
+<button class="pay" type="button">支付</button>
+<%
+	}
+%>
 </body>
 </html>

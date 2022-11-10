@@ -24,10 +24,12 @@
 <div>
 	<span>你好，<%=user.getNick_name()%></span>
 	<span hidden id="user_id"><%=user.getUser_id()%></span>
+	<a href="LogoutServlet">退出登录</a>
 </div>
+<a href="shopping_cart.jsp">查看购物车</a>
 <%
 	List<Book> books = Book.queryBook(null);
-	if (books == null)
+	if (books.size() == 0)
 		out.print("暂无商品在售，请下次光临！");
 	else {
 %>
@@ -47,41 +49,44 @@
 		<th>已选</th>
 	</tr>
 	<%
-		for (Book book : books) {
+		for (int i = 0; i < books.size(); i++) {
 	%>
 	<tr>
 		<td>
-			<%=book.getBook_id()%>
+			<%=i + 1%>
 		</td>
-		<td>
-			<%=book.getImg()%>
+		<td class="book_id" hidden>
+			<%=books.get(i).getBook_id()%>
 		</td>
-		<td>
-			<%=book.getBook_name()%>
+		<td class="img">
+			<%=books.get(i).getImg()%>
 		</td>
-		<td>
-			<%=book.getAuthor()%>
+		<td class="book_name">
+			<%=books.get(i).getBook_name()%>
 		</td>
-		<td>
-			<%=book.getPress()%>
+		<td class="author">
+			<%=books.get(i).getAuthor()%>
 		</td>
-		<td>
-			<%=book.getPub_date()%>
+		<td class="press">
+			<%=books.get(i).getPress()%>
 		</td>
-		<td>
-			<%=book.getIsbn()%>
+		<td class="pub_date">
+			<%=books.get(i).getPub_date()%>
 		</td>
-		<td>
-			<%=book.getShop_name()%>
+		<td class="isbn">
+			<%=books.get(i).getIsbn()%>
 		</td>
-		<td>
-			<%=book.getStore_mount()%>
+		<td class="shop_name">
+			<%=books.get(i).getShop_name()%>
 		</td>
-		<td>
-			<%=book.getDeal_mount()%>
+		<td class="store_mount">
+			<%=books.get(i).getStore_mount()%>
 		</td>
-		<td>
-			<%=book.getPrice()%>
+		<td class="deal_mount">
+			<%=books.get(i).getDeal_mount()%>
+		</td>
+		<td class="price">
+			<%=books.get(i).getPrice()%>
 		</td>
 		<td>
             <span class="sub">

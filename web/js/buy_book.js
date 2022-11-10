@@ -2,20 +2,23 @@ $(function () {
     let storage = window.sessionStorage;
 
     $(".sub").click(function () {
-        let span = this.nextElementSibling;
-        let book_id_td = span.parentElement.parentElement.firstElementChild;
-        if (parseInt(span.innerHTML) - 1 >= 0) {
-            span.innerHTML = parseInt(span.innerHTML) - 1
-            let book_id = book_id_td.innerHTML.replace(/^\s+|\s+$/g, '');
-            storage.setItem(book_id, span.innerHTML)
+        let span = $(this).next()[0];
+        let order_mount = parseInt(span.innerHTML) - 1
+        if (order_mount >= 0) {
+            let book_id = $(this).parent().parent().children(".book_id")[0].innerHTML.trim()
+            if (order_mount === 0) {
+                storage.removeItem(book_id)
+            } else {
+                storage.setItem(book_id, order_mount.toString())
+            }
+            span.innerHTML = order_mount
         }
     })
 
     $(".add").click(function () {
-        let span = this.previousElementSibling;
+        let span = $(this).prev()[0];
         span.innerHTML = parseInt(span.innerHTML) + 1;
-        let book_id_td = span.parentElement.parentElement.firstElementChild;
-        let book_id = book_id_td.innerHTML.replace(/^\s+|\s+$/g, '');
+        let book_id = $(this).parent().parent().children(".book_id")[0].innerHTML.trim()
         storage.setItem(book_id, span.innerHTML)
     })
 })
@@ -38,23 +41,23 @@ function buy_book() {
         return;
     }
 
-    $.ajax(
-        "/bookshop_war_exploded/BuyBookServlet",
-        {
-            type: "POST",
-            data: {
-                user_id: $("#user_id")[0].innerHTML,
-                order: JSON.stringify(orders),
-            },
-            success: function (data) {
-                console.log("yes")
-                console.log(data)
-            },
-            error: function (data) {
-                console.log("no")
-                console.log(data)
-            },
-        });
+    // $.ajax(
+    //     "/bookshop_war_exploded/BuyBookServlet",
+    //     {
+    //         type: "POST",
+    //         data: {
+    //             user_id: $("#user_id")[0].innerHTML,
+    //             order: JSON.stringify(orders),
+    //         },
+    //         success: function (data) {
+    //             console.log("yes")
+    //             console.log(data)
+    //         },
+    //         error: function (data) {
+    //             console.log("no")
+    //             console.log(data)
+    //         },
+    //     });
 
     $.get(
         "/bookshop_war_exploded/BuyBookServlet", {
