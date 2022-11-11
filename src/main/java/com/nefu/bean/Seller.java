@@ -15,16 +15,16 @@ public class Seller {
     public Seller() {
     }
 
-    public int addSeller(Seller sellers) throws SQLException {
+    public int addSeller(Seller seller) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "insert into seller (seller_id,phone, password, shop_name) values (?,?,?,?)";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, sellers.getSeller_id());
-        preparedStatement.setString(2, sellers.getPhone());
-        preparedStatement.setString(3, sellers.getPassword());
-        preparedStatement.setString(4, sellers.getShop_name());
-        int n = preparedStatement.executeUpdate();
-        preparedStatement.close();
+        String sql = "insert into seller (seller_id, phone, password, shop_name) values (?,?,?,?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, seller.getSeller_id());
+        pst.setString(2, seller.getPhone());
+        pst.setString(3, seller.getPassword());
+        pst.setString(4, seller.getShop_name());
+        int n = pst.executeUpdate();
+        pst.close();
         conn.close();
         return n;
     }
@@ -32,17 +32,17 @@ public class Seller {
     public boolean querySeller(Seller seller) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
         String sql = "select * from seller where phone = ? and password = ?";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, seller.getPhone());
-        preparedStatement.setString(2, seller.getPassword());
-        ResultSet resultSet = preparedStatement.executeQuery();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, seller.getPhone());
+        pst.setString(2, seller.getPassword());
+        ResultSet resultSet = pst.executeQuery();
         boolean flag = resultSet.next();
         if (flag) {
             seller.setSeller_id(resultSet.getString("seller_id"));
             seller.setShop_name(resultSet.getString("shop_name"));
         }
         resultSet.close();
-        preparedStatement.close();
+        pst.close();
         conn.close();
         return flag;
     }

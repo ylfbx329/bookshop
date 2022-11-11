@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 
-@WebServlet(name = "UpdateBookServlet", value = "/UpdateBookServlet")
-public class UpdateBookServlet extends HttpServlet {
+@WebServlet(name = "AddBookServlet", value = "/AddBookServlet")
+public class AddBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Book book = new Book();
@@ -24,19 +24,19 @@ public class UpdateBookServlet extends HttpServlet {
         book.setAuthor(request.getParameter("author"));
         book.setPress(request.getParameter("press"));
         book.setPub_date(Date.valueOf(request.getParameter("pub_date")));
-        book.setPrice(new BigDecimal(request.getParameter("price")));
         book.setShop_name(seller.getShop_name());
+        book.setPrice(new BigDecimal(request.getParameter("price")));
         book.setStore_mount(Integer.parseInt(request.getParameter("store_mount")));
         book.setImg(request.getParameter("img").getBytes());
         try {
-            int n = Book.updateBook(book);
+            int n = Book.addBook(book);
             if (n > 0) {
                 response.sendRedirect("seller_index.jsp");
             } else {
                 PrintWriter out = response.getWriter();
-                out.print("修改失败，请检查图书信息");
-                response.setHeader("refresh", "3;url=update_book.jsp");
-                out.print("若没有跳转请点击<a href=update_book.jsp>这里</a>");
+                out.print("添加失败，请检查图书信息");
+                response.setHeader("refresh", "3;URL=add_book.jsp");
+                out.print("若没有跳转请点击<a href=add_book.jsp>这里</a>");
                 out.flush();
                 out.close();
             }

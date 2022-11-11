@@ -17,14 +17,14 @@ public class User {
 
     public int addUser(User user) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "insert into user (user_id,phone, password, nick_name) values (?,?,?,?)";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, user.getUser_id());
-        preparedStatement.setString(2, user.getPhone());
-        preparedStatement.setString(3, user.getPassword());
-        preparedStatement.setString(4, user.getNick_name());
-        int n = preparedStatement.executeUpdate();
-        preparedStatement.close();
+        String sql = "insert into user (user_id, phone, password, nick_name) values (?,?,?,?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, user.getUser_id());
+        pst.setString(2, user.getPhone());
+        pst.setString(3, user.getPassword());
+        pst.setString(4, user.getNick_name());
+        int n = pst.executeUpdate();
+        pst.close();
         conn.close();
         return n;
     }
@@ -32,17 +32,17 @@ public class User {
     public boolean queryUser(User user) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
         String sql = "select * from user where phone = ? and password = ?";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, user.getPhone());
-        preparedStatement.setString(2, user.getPassword());
-        ResultSet resultSet = preparedStatement.executeQuery();
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, user.getPhone());
+        pst.setString(2, user.getPassword());
+        ResultSet resultSet = pst.executeQuery();
         boolean flag = resultSet.next();
         if (flag) {
             user.setUser_id(resultSet.getString("user_id"));
             user.setNick_name(resultSet.getString("nick_name"));
         }
         resultSet.close();
-        preparedStatement.close();
+        pst.close();
         conn.close();
         return flag;
     }

@@ -1,12 +1,6 @@
 <%@ page import="com.nefu.bean.Seller" %>
 <%@ page import="com.nefu.bean.Book" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: kangl
-  Date: 2022/11/3
-  Time: 20:28
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,6 +8,7 @@
     <script src="js/jquery-3.6.1.js"></script>
     <script src="js/ajax_setting.js"></script>
     <script src="js/update_book.js"></script>
+    <script src="js/delete_book.js"></script>
     <script src="js/table.js"></script>
     <link rel="stylesheet" href="css/book_table.css"/>
 </head>
@@ -26,6 +21,7 @@
     <span hidden id="seller_id"><%=seller.getSeller_id()%></span>
     <a href="LogoutServlet">退出登录</a>
 </div>
+<a href="add_book.jsp">上架图书</a>
 <%
     List<Book> books = Book.queryBook(seller.getSeller_id());
     if (books.size() == 0)
@@ -52,6 +48,9 @@
     <tr>
         <td>
             <%=i + 1%>
+        </td>
+        <td class="book_id" hidden>
+            <%=books.get(i).getBook_id()%>
         </td>
         <td class="img">
             <%=books.get(i).getImg()%>
@@ -82,13 +81,15 @@
         </td>
         <td>
             <button class="update" type="button">修改</button>
+            <button class="delete" type="button">删除</button>
         </td>
     </tr>
     <%
-            }
         }
     %>
 </table>
-<button name="buy" onclick="buy_book()">结算</button>
+<%
+    }
+%>
 </body>
 </html>

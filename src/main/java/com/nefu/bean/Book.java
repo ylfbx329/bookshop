@@ -1,6 +1,5 @@
 package com.nefu.bean;
 
-
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,28 +34,40 @@ public class Book {
 
     public static int addBook(Book book) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "insert into book (book_id,seller_id, isbn, book_name, author, press, pub_date, price, store_mount, deal_mount, img) values (?,?,?,?,?,?,?,?,?,?,?)";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setString(1, book.getBook_id());
-        preparedStatement.setString(2, book.getSeller_id());
-        preparedStatement.setString(3, book.getIsbn());
-        preparedStatement.setString(4, book.getBook_name());
-        preparedStatement.setString(5, book.getAuthor());
-        preparedStatement.setString(6, book.getPress());
-        preparedStatement.setDate(7, book.getPub_date());
-        preparedStatement.setBigDecimal(8, book.getPrice());
-        preparedStatement.setInt(9, book.getStore_mount());
-        preparedStatement.setInt(10, book.getDeal_mount());
-        preparedStatement.setBytes(11, book.getImg());
-        int n = preparedStatement.executeUpdate();
-        preparedStatement.close();
+        String sql = "insert into book (book_id,seller_id, isbn, book_name, author, press, pub_date, shop_name, price, store_mount, deal_mount, img) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, book.getBook_id());
+        pst.setString(2, book.getSeller_id());
+        pst.setString(3, book.getIsbn());
+        pst.setString(4, book.getBook_name());
+        pst.setString(5, book.getAuthor());
+        pst.setString(6, book.getPress());
+        pst.setDate(7, book.getPub_date());
+        pst.setString(8, book.getShop_name());
+        pst.setBigDecimal(9, book.getPrice());
+        pst.setInt(10, book.getStore_mount());
+        pst.setInt(11, book.getDeal_mount());
+        pst.setBytes(12, book.getImg());
+        int n = pst.executeUpdate();
+        pst.close();
+        conn.close();
+        return n;
+    }
+
+    public static int deleteBook(String book_id) throws SQLException {
+        Connection conn = ConnDatabase.getConnection();
+        String sql = "delete from book where book_id = ?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, book_id);
+        int n = pst.executeUpdate();
+        pst.close();
         conn.close();
         return n;
     }
 
     public static int updateBook(Book book) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "update book set isbn = ?, book_name = ?,author = ?, press = ?,pub_date = ?,price = ?,store_mount = ?,img = ? where book_id = ?";
+        String sql = "update book set isbn = ?, book_name = ?, author = ?, press = ?, pub_date = ?, price = ?, store_mount = ?, img = ? where book_id = ?";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, book.getIsbn());
         pst.setString(2, book.getBook_name());
@@ -73,18 +84,43 @@ public class Book {
         return n;
     }
 
+    public static Book getBook(String book_id) throws SQLException {
+        Connection conn = ConnDatabase.getConnection();
+        String sql = "select * from book where book_id = ?";
+        PreparedStatement ppst = conn.prepareStatement(sql);
+        ppst.setString(1, book_id);
+        ResultSet resultSet = ppst.executeQuery();
+        Book book = new Book();
+        if (resultSet.next()) {
+            book.setBook_id(book_id);
+            book.setSeller_id(resultSet.getString("seller_id"));
+            book.setIsbn(resultSet.getString("isbn"));
+            book.setBook_name(resultSet.getString("book_name"));
+            book.setAuthor(resultSet.getString("author"));
+            book.setPress(resultSet.getString("press"));
+            book.setPub_date(resultSet.getDate("pub_date"));
+            book.setPrice(resultSet.getBigDecimal("price"));
+            book.setShop_name(resultSet.getString("shop_name"));
+            book.setStore_mount(resultSet.getInt("store_mount"));
+            book.setDeal_mount(resultSet.getInt("deal_mount"));
+            book.setImg(resultSet.getBytes("img"));
+        }
+        resultSet.close();
+        ppst.close();
+        conn.close();
+        return book;
+    }
+
     public static List<Book> queryBook(String seller_id) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        Statement statement = conn.createStatement();
         String sql = "select * from book ";
         if (seller_id != null) {
             sql += "where seller_id = '" + seller_id + "'";
-            System.out.println("queryBook sql -> " + sql);
         } else {
             sql += "inner join seller on seller.seller_id = book.seller_id";
         }
-        System.out.println("queryBook sql -> " + sql);
-        ResultSet resultSet = statement.executeQuery(sql);
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet resultSet = pst.executeQuery();
         List<Book> books = new ArrayList<>();
         Book book;
         while (resultSet.next()) {
@@ -96,16 +132,15 @@ public class Book {
             book.setAuthor(resultSet.getString("author"));
             book.setPress(resultSet.getString("press"));
             book.setPub_date(resultSet.getDate("pub_date"));
+            book.setShop_name(resultSet.getString("shop_name"));
             book.setPrice(resultSet.getBigDecimal("price"));
             book.setStore_mount(resultSet.getInt("store_mount"));
             book.setDeal_mount(resultSet.getInt("deal_mount"));
             book.setImg(resultSet.getBytes("img"));
-            if (seller_id == null)
-                book.setShop_name(resultSet.getString("shop_name"));
             books.add(book);
         }
         resultSet.close();
-        statement.close();
+        pst.close();
         conn.close();
         return books;
     }

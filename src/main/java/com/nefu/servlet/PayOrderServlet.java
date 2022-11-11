@@ -9,14 +9,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-@WebServlet(name = "DeleteOrderServlet", value = "/DeleteOrderServlet")
-public class DeleteOrderServlet extends HttpServlet {
+@WebServlet(name = "PayOrderServlet", value = "/PayOrderServlet")
+public class PayOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String order_id = request.getParameter("order_id");
+        String user_id = request.getParameter("user_id");
         try {
-            int n = Order.deleteOrder(order_id);
-            response.getWriter().print(n);
+            BigDecimal price = Order.payOrder(user_id);
+            if (price != null) {
+                response.setHeader("REDIRECT", "REDIRECT");
+                response.setHeader("CONTENTPATH", "pay.jsp?price=" + price);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

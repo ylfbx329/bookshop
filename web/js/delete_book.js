@@ -1,9 +1,10 @@
 $(function () {
     $(".delete").click(function () {
         let tr = $(this).parent().parent()[0]
+        let book_id = $(tr).children(".book_id")[0].innerHTML.trim()
         $.get(
-            "/bookshop_war_exploded/DeleteOrderServlet", {
-                order_id: this.value,
+            "/bookshop_war_exploded/DeleteBookServlet", {
+                book_id: book_id,
             },
             function (data) {
                 if (data === "1") {

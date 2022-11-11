@@ -1,12 +1,6 @@
 <%@ page import="com.nefu.bean.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.nefu.bean.Book" %><%--
-  Created by IntelliJ IDEA.
-  User: kangl
-  Date: 2022/11/3
-  Time: 20:29
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.nefu.bean.Book" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,7 +8,7 @@
 	<script src="js/jquery-3.6.1.js"></script>
 	<script src="js/ajax_setting.js"></script>
 	<script src="js/table.js"></script>
-	<script src="js/buy_book.js"></script>
+	<script src="js/add_order.js"></script>
 	<link rel="stylesheet" href="css/book_table.css"/>
 </head>
 <body>
@@ -110,10 +104,12 @@
 		</td>
 	</tr>
 	<%
-			}
 		}
 	%>
 </table>
-<button name="buy" onclick="buy_book()">结算</button>
+<button name="buy" onclick="add_order()">结算</button>
+<%
+	}
+%>
 </body>
 </html>

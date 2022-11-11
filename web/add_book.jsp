@@ -2,10 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-	<script src="js/jquery-3.6.1.js"></script>
-	<script src="js/ajax_setting.js"></script>
-	<script src="js/update_book.js"></script>
-	<title>图书信息</title>
+	<title>上架图书</title>
 </head>
 <body>
 <%
@@ -17,8 +14,8 @@
 	<a href="LogoutServlet">退出登录</a>
 </div>
 <a href="seller_index.jsp">返回店铺</a>
-<h1>请修改图书基本信息</h1>
-<form action="UpdateBookServlet" method="post" id="form">
+<h1>请填写图书基本信息</h1>
+<form action="AddBookServlet" method="post" id="form">
 	<div>
 		<label for="isbn">ISBN</label>
 		<input type="text" name="isbn" id="isbn">

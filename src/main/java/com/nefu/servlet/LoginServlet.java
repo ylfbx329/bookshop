@@ -9,7 +9,6 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 @WebServlet(name = "LoginServlet", value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
     @Override
@@ -40,7 +39,6 @@ public class LoginServlet extends HttpServlet {
                 target = "seller_index.jsp";
             }
         }
-
         if (flag) {
             response.sendRedirect(target);
         } else {

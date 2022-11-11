@@ -1,5 +1,6 @@
 package com.nefu.servlet;
 
+import com.nefu.bean.Book;
 import com.nefu.bean.Order;
 
 import javax.servlet.*;
@@ -9,13 +10,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
-@WebServlet(name = "DeleteOrderServlet", value = "/DeleteOrderServlet")
-public class DeleteOrderServlet extends HttpServlet {
+@WebServlet(name = "DeleteBookServlet", value = "/DeleteBookServlet")
+public class DeleteBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String order_id = request.getParameter("order_id");
+        String book_id = request.getParameter("book_id");
         try {
-            int n = Order.deleteOrder(order_id);
+            int n = Book.deleteBook(book_id);
             response.getWriter().print(n);
         } catch (SQLException e) {
             throw new RuntimeException(e);

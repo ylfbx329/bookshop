@@ -2,13 +2,7 @@
 <%@ page import="com.nefu.bean.Order" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.nefu.bean.Book" %>
-<%@ page import="javafx.util.Pair" %><%--
-  Created by IntelliJ IDEA.
-  User: kangl
-  Date: 2022/11/5
-  Time: 20:03
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="javafx.util.Pair" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -17,6 +11,7 @@
 	<script src="js/ajax_setting.js"></script>
 	<script src="js/table.js"></script>
 	<script src="js/delete_order.js"></script>
+	<script src="js/pay_order.js"></script>
 	<link rel="stylesheet" href="css/book_table.css"/>
 </head>
 <body>

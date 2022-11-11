@@ -23,7 +23,7 @@ $(function () {
     })
 })
 
-function buy_book() {
+function add_order() {
     let storage = window.sessionStorage;
     let orders = [];
 
@@ -41,26 +41,8 @@ function buy_book() {
         return;
     }
 
-    // $.ajax(
-    //     "/bookshop_war_exploded/BuyBookServlet",
-    //     {
-    //         type: "POST",
-    //         data: {
-    //             user_id: $("#user_id")[0].innerHTML,
-    //             order: JSON.stringify(orders),
-    //         },
-    //         success: function (data) {
-    //             console.log("yes")
-    //             console.log(data)
-    //         },
-    //         error: function (data) {
-    //             console.log("no")
-    //             console.log(data)
-    //         },
-    //     });
-
     $.get(
-        "/bookshop_war_exploded/BuyBookServlet", {
+        "/bookshop_war_exploded/AddOrderServlet", {
             user_id: $("#user_id")[0].innerHTML,
             order: JSON.stringify(orders),
         })

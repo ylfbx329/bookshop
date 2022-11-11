@@ -9,10 +9,7 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        boolean isuser = (boolean) request.getSession().getAttribute("isuser");
-        request.getSession().removeAttribute("isuser");
-        String type_str = isuser ? "user" : "seller";
-        request.getSession().removeAttribute(type_str);
+        request.getSession().invalidate();
         response.sendRedirect("html/welcome.html");
     }
 
