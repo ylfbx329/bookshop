@@ -87,13 +87,14 @@ public class Order {
 
     public static BigDecimal getSumPrice(String user_id) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
-        String sql = "select price from `order` where user_id = ?";
+        String sql = "select book_id, price, order_mount from `order` where user_id = ?";
         PreparedStatement pst = conn.prepareStatement(sql);
         pst.setString(1, user_id);
         ResultSet resultSet = pst.executeQuery();
         BigDecimal price = new BigDecimal(0);
         while (resultSet.next()) {
             price = price.add(resultSet.getBigDecimal("price"));
+            Book.updateBookNum(resultSet.getString("book_id"), resultSet.getInt("order_mount"));
         }
         resultSet.close();
         pst.close();

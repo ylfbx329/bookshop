@@ -84,6 +84,28 @@ public class Book {
         return n;
     }
 
+    public static void updateBookNum(String book_id, int order_mount) throws SQLException {
+        Connection conn = ConnDatabase.getConnection();
+        String sql1 = "select store_mount, deal_mount from book where book_id = ?";
+        PreparedStatement selectPst = conn.prepareStatement(sql1);
+        selectPst.setString(1, book_id);
+        ResultSet resultSet = selectPst.executeQuery();
+        if (resultSet.next()) {
+            int store_mount = resultSet.getInt("store_mount") - order_mount;
+            int deal_mount = resultSet.getInt("deal_mount") + order_mount;
+            String sql2 = "update book set store_mount = ?, deal_mount = ? where book_id = ?";
+            PreparedStatement updatePst = conn.prepareStatement(sql2);
+            updatePst.setInt(1, store_mount);
+            updatePst.setInt(2, deal_mount);
+            updatePst.setString(3, book_id);
+            updatePst.executeUpdate();
+            updatePst.close();
+        }
+        selectPst.close();
+        resultSet.close();
+        conn.close();
+    }
+
     public static Book getBook(String book_id) throws SQLException {
         Connection conn = ConnDatabase.getConnection();
         String sql = "select * from book where book_id = ?";
