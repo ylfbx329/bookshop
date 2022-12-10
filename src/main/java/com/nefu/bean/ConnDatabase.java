@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnDatabase {
-    public static final String URL = "jdbc:mysql://192.168.1.150:3306/bookshop?serverTimezone=UTC";
+    public static final String URL = "jdbc:mysql://43.143.190.227:3306/bookshop?serverTimezone=UTC";
     public static final String USER = "root";
     public static final String PASSWORD = "1111";
     private static Connection conn = null;
