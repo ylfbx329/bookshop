@@ -8,7 +8,7 @@ JavaWeb 项目
 前端：HTML、JSP 组织页面，JS 处理样式和数据验证与传递，CSS 控制样式  
 后端：Servlet 处理请求，JavaBean 提供方法和连接数据库，Filter 编码过滤器  
 
-![枫叶书店](https://pic1.imgdb.cn/item/636e563416f2c2beb155eba3.png)
+![枫叶书店](./枫叶书店.png)
 
 #### 安装教程
 环境：
